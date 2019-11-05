@@ -59,21 +59,30 @@ print(ODDELOVAC)
 
 print(f"Zvolený druh textu obsahuje {len(text_vyber.split())} slov.")
 
-zacatek_velky = 0
-velke = 0
-male = 0
-cisla = 0
-soucet_cisel = 0
+clean_words = [w.strip(',.') for w in text_vyber.split()]
 
-for x in text_vyber:
-    if (x.istitle()) == True:
-        zacatek_velky+= 1
-    elif (x.isupper()) == True:
-        velke+= 1
-    elif (x.islower()) == True:
-        male+= 1
-    elif (x.isnumeric()) == True:
-        cisla+= 1
+zacatek_velky = 0
+male = 0
+velke = 0
+cisla = 0
+pocitadlo = {}
+soucet = 0
+
+x = 0
+while x < len(clean_words):
+    if clean_words[x].istitle():
+        zacatek_velky = zacatek_velky + 1
+    elif clean_words[x].isupper():
+        velke = velke + 1
+    elif clean_words[x].islower():
+        male = male + 1
+    elif clean_words[x].isnumeric():
+        cisla = cisla + 1
+        soucet = soucet + int(clean_words[x])
+
+    y = len(clean_words[x])
+    pocitadlo[y] = pocitadlo.get(y,0) + 1
+    x = x + 1
 
 print(f"Zvolený druh textu obsahuje {zacatek_velky} slov začínajících velkými písmeny.")
 print(f"Zvolený druh textu obsahuje {velke} slov s velkými písmeny.")
@@ -81,13 +90,19 @@ print(f"Zvolený druh textu obsahuje {male} slov s malými písmeny.")
 print(f"Zvolený druh textu obsahuje {cisla} číslice.")
 print(ODDELOVAC)
 
-clean_words = [w.strip(',.') for w in text_vyber.split()]
+pocitadlo_1 = sorted(pocitadlo)
 
-num = [num for num, word in enumerate(clean_words)]
-
-for num,word in enumerate(clean_words):
-    print(num, "*".format(word) * len(word), len(word))
+z = 0
+while z < len(pocitadlo_1):
+    pocitadlo_2 = pocitadlo_1[z]
+    vyskyt = pocitadlo[pocitadlo_2]
+    if len(str(pocitadlo_2)) == 1:
+        delka_sl = ' ' + str(pocitadlo_2)
+    else:
+        delka_sl = str(pocitadlo_2)
+    print(delka_sl, '*' * vyskyt, vyskyt)
+    z = z + 1
 
 print(ODDELOVAC)
-print(f"Součet všech čísel ve zvoleném textu je:") # Tohle fakt nevím :-)
+print(f"Součet všech čísel ve zvoleném textu je: {str(soucet)}")
 print(ODDELOVAC)
